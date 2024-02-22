@@ -11,6 +11,7 @@ global.muteRole = "0"; // the ID of the muted role
 global.ownerRole = "0"; // the ID of the server owner role
 global.memberRole = "0"; // the ID of the basic member role
 global.gameImage = "https://arras.io/favicon/128x128.png" // put the url of your game's logo
+const {closeArena} = require("../../gamemodes/closeArena");
 
 const envKeys = [ //this is to protect .env from eval, put your .env names here. DO NOT MAKE ANY TYPOS AS IT CAN FALSELY FLAG A COMMAND IF SO.
   'TOKEN1',
