@@ -378,9 +378,7 @@ if (msg.content.startsWith(`${prefix}abr `)) {
   // restart
   else if (msg.content === `${prefix}restart`) {
     if (msg.member.roles.includes(devRole)) {
-      setTimeout(() => {
-        closeArena();
-      }, 1000);
+      closeArena()
       bot.createMessage(msg.channel.id, {
         embed: {
           title: "Restart command",
