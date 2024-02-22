@@ -578,7 +578,7 @@ if (msg.content.startsWith(`${prefix}abr `)) {
 
 }
 });
-bot.editStatus("online", { name: `${prefix}help`, type: 0 });
+bot.editStatus("online", { name: `with 0 players!`, type: 0 });
 bot.connect();
 module.exports = ({ Events }) => {
 Events.on("chatMessage", ({ message, socket }) => {
