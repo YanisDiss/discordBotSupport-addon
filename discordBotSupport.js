@@ -582,7 +582,7 @@ bot.editStatus("online", { name: `${prefix}help`, type: 0 });
 bot.connect();
 module.exports = ({ Events }) => {
 Events.on("chatMessage", ({ message, socket }) => {
-  if (!socket.player.body) return;
+  if (!socket.player.body || message.startsWith("/")) return;
   let playerName = socket.player.body.name
     ? socket.player.body.name
     : "Unnamed";
