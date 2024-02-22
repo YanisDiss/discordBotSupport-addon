@@ -445,7 +445,7 @@ if (msg.content.startsWith(`${prefix}abr `)) {
   else if (msg.content === `${prefix}apl`) {
     if (
       msg.member.roles.includes(devRole) &&
-      msg.member.roles.includes(ownerRole) // this commands retrns player ips and tokens, that's why i made it ownerOnly
+      msg.member.roles.includes(ownerRole) // this commands returns player ips and tokens, that's why i made it ownerOnly
     ) {
       bot.createMessage(msg.channel.id, {
         embed: {
