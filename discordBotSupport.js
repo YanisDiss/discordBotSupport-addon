@@ -50,6 +50,9 @@ bot.on("ready", async () => {
     console.error(err);
   }
 });
+function updateStatus() {
+  bot.editStatus("online", { name: `with ${sockets.clients.length} players!`, type: 0 });
+}
 bot.on("interactionCreate", (interaction) => {
   // ping command
   if (interaction instanceof Eris.CommandInteraction) {
@@ -77,7 +80,7 @@ bot.on("interactionCreate", (interaction) => {
 // error handler
 process.on("uncaughtException", function (err) {
   console.error(err);
-  bot.editStatus("online", { name: `${prefix}help`, type: 0 });
+  updateStatus()
   bot.connect();
 });
 
@@ -594,7 +597,7 @@ Events.on("chatMessage", ({ message, socket }) => {
       ],
     },
   });
-  bot.editStatus("online", { name: `${prefix}help`, type: 0 }); // bot reconnects everythime a new message is sent in the chat
+  updateStatus()
 bot.connect();
 });
 };
