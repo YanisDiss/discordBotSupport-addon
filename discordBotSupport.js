@@ -90,7 +90,7 @@ bot.on("messageCreate", (msg) => { // prefixed commands
     bot.createMessage(msg.channel.id, "Pong!");
   } 
 
-  else if (msg.content.includes('<@1183085738254938203>')) { // put here mention id of your bot (toedit)
+  else if (msg.content.includes(bot.user.id)) { 
     let phrases = ["I've been pinged again.",
     "Why the frequent pings?",
     "Another ping. Seriously, why are you bothering me?",
