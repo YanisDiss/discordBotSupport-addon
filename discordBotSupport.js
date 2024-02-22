@@ -283,7 +283,14 @@ bot.on("messageCreate", (msg) => { // prefixed commands
           thumbnail: {
             url: gameImage,
           },
-          footer: {},
+          footer: {
+            text:
+                `Requested by ` +
+                msg.member.username +
+                " (" +
+                msg.member.id +
+                ")",
+          },
         },
       }
       );   
