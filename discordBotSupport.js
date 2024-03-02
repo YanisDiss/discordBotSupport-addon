@@ -11,6 +11,7 @@ global.muteRole = "0"; // the ID of the muted role
 global.ownerRole = "0"; // the ID of the server owner role
 global.memberRole = "0"; // the ID of the basic member role
 global.gameImage = "https://arras.io/favicon/128x128.png" // put the url of your game's logo
+const {closeArena} = require("../../gamemodes/closeArena");
 
 const envKeys = [ //this is to protect .env from eval, put your .env names here. DO NOT MAKE ANY TYPOS AS IT CAN FALSELY FLAG A COMMAND IF SO.
   'TOKEN1',
@@ -49,6 +50,9 @@ bot.on("ready", async () => {
     console.error(err);
   }
 });
+function updateStatus() {
+  bot.editStatus("online", { name: `with ${sockets.clients.length} players!`, type: 0 });
+}
 bot.on("interactionCreate", (interaction) => {
   // ping command
   if (interaction instanceof Eris.CommandInteraction) {
@@ -76,7 +80,7 @@ bot.on("interactionCreate", (interaction) => {
 // error handler
 process.on("uncaughtException", function (err) {
   console.error(err);
-  bot.editStatus("online", { name: `${prefix}help`, type: 0 });
+  updateStatus()
   bot.connect();
 });
 
@@ -86,7 +90,7 @@ bot.on("messageCreate", (msg) => { // prefixed commands
     bot.createMessage(msg.channel.id, "Pong!");
   } 
 
-  else if (msg.content.includes('<@1183085738254938203>')) { // put here mention id of your bot (toedit)
+  else if (msg.content.includes(bot.user.id)) { 
     let phrases = ["I've been pinged again.",
     "Why the frequent pings?",
     "Another ping. Seriously, why are you bothering me?",
@@ -279,7 +283,14 @@ bot.on("messageCreate", (msg) => { // prefixed commands
           thumbnail: {
             url: gameImage,
           },
-          footer: {},
+          footer: {
+            text:
+                `Requested by ` +
+                msg.member.username +
+                " (" +
+                msg.member.id +
+                ")",
+          },
         },
       }
       );   
@@ -367,9 +378,7 @@ if (msg.content.startsWith(`${prefix}abr `)) {
   // restart
   else if (msg.content === `${prefix}restart`) {
     if (msg.member.roles.includes(devRole)) {
-      setTimeout(() => {
-        closeArena();
-      }, 1000);
+      closeArena()
       bot.createMessage(msg.channel.id, {
         embed: {
           title: "Restart command",
@@ -441,7 +450,7 @@ if (msg.content.startsWith(`${prefix}abr `)) {
   else if (msg.content === `${prefix}apl`) {
     if (
       msg.member.roles.includes(devRole) &&
-      msg.member.roles.includes(ownerRole) // this commands retrns player ips and tokens, that's why i made it ownerOnly
+      msg.member.roles.includes(ownerRole) // this commands returns player ips and tokens, that's why i made it ownerOnly
     ) {
       bot.createMessage(msg.channel.id, {
         embed: {
@@ -574,11 +583,11 @@ if (msg.content.startsWith(`${prefix}abr `)) {
 
 }
 });
-bot.editStatus("online", { name: `${prefix}help`, type: 0 });
+bot.editStatus("online", { name: `with 0 players!`, type: 0 });
 bot.connect();
 module.exports = ({ Events }) => {
 Events.on("chatMessage", ({ message, socket }) => {
-  if (!socket.player.body) return;
+  if (!socket.player.body || message.startsWith("/")) return;
   let playerName = socket.player.body.name
     ? socket.player.body.name
     : "Unnamed";
@@ -593,7 +602,8 @@ Events.on("chatMessage", ({ message, socket }) => {
       ],
     },
   });
-  bot.editStatus("online", { name: `${prefix}help`, type: 0 }); // bot reconnects everythime a new message is sent in the chat
+  updateStatus()
 bot.connect();
 });
 };
+
